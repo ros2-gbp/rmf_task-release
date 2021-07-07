@@ -1,0 +1,12 @@
+Source: ros-rolling-rmf-task
+Section: misc
+Priority: optional
+Maintainer: Yadunund <yadunund@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, ros-rolling-ament-cmake-catch2, ros-rolling-rmf-battery, ros-rolling-rmf-cmake-uncrustify, ros-rolling-rmf-dispenser-msgs, ros-rolling-rmf-utils, ros-rolling-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-rolling-rmf-task
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, ros-rolling-rmf-battery, ros-rolling-rmf-dispenser-msgs, ros-rolling-rmf-utils, ros-rolling-ros-workspace
+Description: Package for managing tasks in the Robotics Middleware Framework
