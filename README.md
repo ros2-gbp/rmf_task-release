@@ -1,10 +1,7 @@
-# rmf_task
+# rmf\_task package
 
-![](https://github.com/open-rmf/rmf_task/workflows/build/badge.svg)
-[![codecov](https://codecov.io/gh/open-rmf/rmf_task/branch/main/graph/badge.svg)](https://codecov.io/gh/open-rmf/rmf_task)
+This package provides functionality for managing tasks in RMF.
 
-The `rmf_task` package provides:
-* Factories for creating various tasks supported in RMF (`rmf_tasks::requests::TASK`)
-* A library for optimally allocating `n` tasks across `m` participants (`rmf_task::agv::TaskPlanner`).
+## Quality Declaration
 
-More information on the supported tasks and task management in RMF can be found [here](https://osrf.github.io/ros2multirobotbook/task.html)
+This package claims to be in the **Quality Level 4** category. See the [Quality Declaration](QUALITY_DECLARATION.md) for more details.
