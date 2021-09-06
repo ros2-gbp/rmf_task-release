@@ -165,7 +165,13 @@ ChargeBattery::Model::estimate_finish(
   }
 
   double delta_soc = recharge_soc - battery_soc;
-  assert(delta_soc >= 0.0);
+  if (delta_soc <= 1e-3)
+  {
+    // The robot's battery level when it reaches the charger is greater than
+    // the specified battery level the robot should be charged up to. Hence, we
+    // do not need a ChargeBattery task.
+    return std::nullopt;
+  }
   double time_to_charge =
     (3600 * delta_soc * _parameters.battery_system().capacity()) /
     _parameters.battery_system().charging_current();
@@ -220,14 +226,15 @@ std::shared_ptr<Request::Model> ChargeBattery::Description::make_model(
 //==============================================================================
 ConstRequestPtr ChargeBattery::make(
   rmf_traffic::Time earliest_start_time,
-  ConstPriorityPtr priority)
+  ConstPriorityPtr priority,
+  bool automatic)
 {
 
   std::string id = "Charge" + generate_uuid();
   const auto description = Description::make();
 
   return std::make_shared<Request>(
-    id, earliest_start_time, priority, description);
+    id, earliest_start_time, priority, description, automatic);
 
 }
 
