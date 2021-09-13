@@ -1,0 +1,12 @@
+Source: ros-foxy-rmf-task
+Section: misc
+Priority: optional
+Maintainer: Yadunund <yadunund@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, ros-foxy-ament-cmake-catch2, ros-foxy-rmf-battery, ros-foxy-rmf-cmake-uncrustify, ros-foxy-rmf-utils, ros-foxy-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-foxy-rmf-task
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, ros-foxy-rmf-battery, ros-foxy-rmf-utils, ros-foxy-ros-workspace
+Description: Package for managing tasks in the Robotics Middleware Framework
