@@ -1,0 +1,12 @@
+Source: ros-humble-rmf-task
+Section: misc
+Priority: optional
+Maintainer: Yadunund <yadunund@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, ros-humble-ament-cmake-catch2 <!nocheck>, ros-humble-rmf-battery, ros-humble-rmf-cmake-uncrustify <!nocheck>, ros-humble-rmf-utils, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-rmf-task
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, ros-humble-rmf-battery, ros-humble-rmf-utils, ros-humble-ros-workspace
+Description: Package for managing tasks in the Robotics Middleware Framework
