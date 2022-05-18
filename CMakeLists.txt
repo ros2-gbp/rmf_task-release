@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5.0)
 
-project(rmf_task VERSION 0.1.0)
+project(rmf_task VERSION 2.0.0)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
@@ -26,13 +26,10 @@ find_package(rmf_battery REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 find_package(ament_cmake_catch2 QUIET)
-find_package(rmf_cmake_uncrustify QUIET)
+find_package(ament_cmake_uncrustify QUIET)
 
 # ===== RMF Tasks library
-file(GLOB lib_srcs
-  "src/rmf_task/agv/*.cpp"
-  "src/rmf_task/requests/*.cpp"
-  "src/rmf_task/requests/factory/*.cpp"
+file(GLOB_RECURSE lib_srcs
   "src/rmf_task/*.cpp"
 )
 
@@ -52,7 +49,7 @@ target_include_directories(rmf_task
     ${EIGEN3_INCLUDE_DIRS}
 )
 
-if(BUILD_TESTING AND ament_cmake_catch2_FOUND AND rmf_cmake_uncrustify_FOUND)
+if(BUILD_TESTING AND ament_cmake_catch2_FOUND AND ament_cmake_uncrustify_FOUND)
   file(GLOB_RECURSE unit_test_srcs "test/*.cpp")
 
   ament_add_catch2(
@@ -73,7 +70,7 @@ if(BUILD_TESTING AND ament_cmake_catch2_FOUND AND rmf_cmake_uncrustify_FOUND)
     NAMES "rmf_code_style.cfg"
     PATHS "${rmf_utils_DIR}/../../../share/rmf_utils/")
 
-  rmf_uncrustify(
+  ament_uncrustify(
     ARGN include src test
     CONFIG_FILE ${uncrustify_config_file}
     MAX_LINE_LENGTH 80
@@ -132,4 +129,9 @@ export(
   NAMESPACE rmf_task::
 )
 
-export(PACKAGE rmf_task)
+# Export ament index path
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/share/ament_index/resource_index/packages/${PROJECT_NAME} "")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/share/ament_index/resource_index/packages/${PROJECT_NAME} DESTINATION share/ament_index/resource_index/packages)
+
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/share/${PROJECT_NAME}/hook/ament_prefix_path.dsv "prepend-non-duplicate;AMENT_PREFIX_PATH;")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/share/${PROJECT_NAME}/hook/ament_prefix_path.dsv DESTINATION share/${PROJECT_NAME}/hook)
