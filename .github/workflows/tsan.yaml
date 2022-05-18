@@ -1,5 +1,5 @@
 name: tsan
-on: 
+on:
   pull_request:
   schedule:
     - cron: '31 0 * * *'
@@ -23,7 +23,7 @@ jobs:
           target-ros2-distro: foxy
           # build all packages listed in the meta package
           package-name: |
-            rmf_task 
+            rmf_task
           vcs-repo-file-url: |
             https://raw.githubusercontent.com/open-rmf/rmf/main/rmf.repos
           colcon-defaults: |
@@ -38,6 +38,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: colcon-test-logs
-          path: ${{ steps.tsan_build_test.outputs.ros-workspace-directory-name }}/log/latest_test/rmf_task/streams.log
+          path: ${{ steps.tsan_build_test.outputs.ros-workspace-directory-name }}/log
         if: always()
 
