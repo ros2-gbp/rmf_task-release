@@ -21,8 +21,9 @@
 #include <rmf_task/Request.hpp>
 #include <rmf_task/RequestFactory.hpp>
 #include <rmf_task/CostCalculator.hpp>
-#include <rmf_task/agv/Constraints.hpp>
-#include <rmf_task/agv/Parameters.hpp>
+#include <rmf_task/Constraints.hpp>
+#include <rmf_task/Parameters.hpp>
+#include <rmf_task/State.hpp>
 
 #include <rmf_utils/impl_ptr.hpp>
 
@@ -32,7 +33,6 @@
 #include <variant>
 
 namespace rmf_task {
-namespace agv {
 
 //==============================================================================
 class TaskPlanner
@@ -149,14 +149,14 @@ public:
     ///   The earliest time the agent will begin exececuting this task
     Assignment(
       rmf_task::ConstRequestPtr request,
-      State state,
+      State finish_state,
       rmf_traffic::Time deployment_time);
 
     // Get the request of this task
     const rmf_task::ConstRequestPtr& request() const;
 
     // Get a const reference to the predicted state at the end of the assignment
-    const State& state() const;
+    const State& finish_state() const;
 
     // Get the time when the robot begins executing
     // this assignment
@@ -247,9 +247,6 @@ public:
   /// Compute the cost of a set of assignments
   double compute_cost(const Assignments& assignments) const;
 
-  /// Retrieve the task planner cache
-  const std::shared_ptr<EstimateCache>& estimate_cache() const;
-
   class Implementation;
 
 private:
@@ -257,7 +254,6 @@ private:
 
 };
 
-} // namespace agv
 } // namespace rmf_task
 
 #endif // RMF_TASK__AGV__TASKPLANNER_HPP

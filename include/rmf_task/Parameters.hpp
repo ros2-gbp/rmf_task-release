@@ -27,7 +27,6 @@
 #include <rmf_utils/impl_ptr.hpp>
 
 namespace rmf_task {
-namespace agv {
 
 //==============================================================================
 /// A class that containts parameters that are common among the agents/AGVs
@@ -100,10 +99,11 @@ public:
 
 private:
   rmf_utils::impl_ptr<Implementation> _pimpl;
-
 };
 
-} // namespace agv
+//==============================================================================
+using ConstParametersPtr = std::shared_ptr<const Parameters>;
+
 } // namespace rmf_task
 
 #endif // RMF_TASK__AGV__PARAMETERS_HPP
