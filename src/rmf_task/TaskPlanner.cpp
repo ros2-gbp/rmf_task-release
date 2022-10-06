@@ -16,11 +16,11 @@
 */
 
 #include <rmf_task/Estimate.hpp>
-#include <rmf_task/agv/State.hpp>
+#include <rmf_task/State.hpp>
 #include <rmf_task/BinaryPriorityScheme.hpp>
 #include <rmf_task/requests/ChargeBattery.hpp>
 
-#include "../BinaryPriorityCostCalculator.hpp"
+#include "BinaryPriorityCostCalculator.hpp"
 
 #include <rmf_traffic/Time.hpp>
 
@@ -28,7 +28,6 @@
 #include <queue>
 
 namespace rmf_task {
-namespace agv {
 
 //==============================================================================
 class TaskPlanner::Configuration::Implementation
@@ -196,7 +195,7 @@ const rmf_task::ConstRequestPtr& TaskPlanner::Assignment::request() const
 }
 
 //==============================================================================
-const State& TaskPlanner::Assignment::state() const
+const State& TaskPlanner::Assignment::finish_state() const
 {
   return _pimpl->state;
 }
@@ -373,7 +372,7 @@ public:
 
   Configuration config;
   Options default_options;
-  std::shared_ptr<EstimateCache> estimate_cache;
+  ConstTravelEstimatorPtr travel_estimator;
   bool check_priority = false;
   ConstCostCalculatorPtr cost_calculator = nullptr;
 
@@ -430,7 +429,7 @@ public:
         continue;
       }
 
-      const auto& state = agent.back().state();
+      const auto& state = agent.back().finish_state();
       const auto request = factory.make_request(state);
 
       // TODO(YV) Currently we are unable to recursively call complete_solve()
@@ -440,10 +439,10 @@ public:
       // When we fix the logic with unnecessary ChargeBattery tasks, we should
       // revist making this a recursive call.
       auto model = request->description()->make_model(
-        state.finish_time(),
+        state.time().value(),
         config.parameters());
       auto estimate = model->estimate_finish(
-        state, config.constraints(), *estimate_cache);
+        state, config.constraints(), *travel_estimator);
       if (estimate.has_value())
       {
         agent.push_back(
@@ -459,23 +458,23 @@ public:
         // Insufficient battery to perform the finishing request. We check if
         // adding a ChargeBattery task before will allow for it to be performed
         const auto charging_request =
-          make_charging_request(state.finish_time());
+          make_charging_request(state.time().value());
         const auto charge_battery_model =
           charging_request->description()->make_model(
-          state.finish_time(),
+          state.time().value(),
           config.parameters());
         const auto charge_battery_estimate =
           charge_battery_model->estimate_finish(
-          state, config.constraints(), *estimate_cache);
+          state, config.constraints(), *travel_estimator);
         if (charge_battery_estimate.has_value())
         {
           model = request->description()->make_model(
-            charge_battery_estimate.value().finish_state().finish_time(),
+            charge_battery_estimate.value().finish_state().time().value(),
             config.parameters());
           estimate = model->estimate_finish(
             charge_battery_estimate.value().finish_state(),
             config.constraints(),
-            *estimate_cache);
+            *travel_estimator);
           if (estimate.has_value())
           {
             // Append the ChargeBattery and finishing request
@@ -514,7 +513,7 @@ public:
     // If so the cost function for a node will be modified accordingly.
     for (const auto& request : requests)
     {
-      if (request->priority())
+      if (request->booking()->priority())
       {
         check_priority = true;
         break;
@@ -576,14 +575,14 @@ public:
         time_now, 0, 0.0};
       estimates.resize(
         node->assigned_tasks.size(),
-        State{empty_new_location, 0, 0.0});
+        State().load_basic(empty_new_location, 0, 0.0));
       for (std::size_t i = 0; i < node->assigned_tasks.size(); ++i)
       {
         const auto& assignments = node->assigned_tasks[i];
         if (assignments.empty())
           estimates[i] = initial_states[i];
         else
-          estimates[i] = assignments.back().assignment.state();
+          estimates[i] = assignments.back().assignment.finish_state();
       }
 
       node = make_initial_node(
@@ -624,7 +623,7 @@ public:
         config.constraints(),
         config.parameters(),
         request,
-        *estimate_cache,
+        *travel_estimator,
         error);
 
       if (!pending_task)
@@ -647,8 +646,8 @@ public:
         rmf_traffic::Time latest = rmf_traffic::Time::min();
         for (const auto& s : initial_states)
         {
-          if (latest < s.finish_time())
-            latest = s.finish_time();
+          if (latest < s.time().value())
+            latest = s.time().value();
         }
 
         return latest;
@@ -680,7 +679,9 @@ public:
       if (a.empty())
         continue;
 
-      const auto finish_time = a.back().assignment.state().finish_time();
+      const auto finish_time =
+        a.back().assignment.finish_state().time().value();
+
       if (latest < finish_time)
         latest = finish_time;
     }
@@ -718,13 +719,13 @@ public:
           assignments.back().assignment.request()->description()))
       {
         auto charge_battery = make_charging_request(
-          entry.previous_state.finish_time());
+          entry.previous_state.time().value());
         const auto charge_battery_model =
           charge_battery->description()->make_model(
-          charge_battery->earliest_start_time(),
+          charge_battery->booking()->earliest_start_time(),
           config.parameters());
         auto battery_estimate = charge_battery_model->estimate_finish(
-          entry.previous_state, constraints, *estimate_cache);
+          entry.previous_state, constraints, *travel_estimator);
         if (battery_estimate.has_value())
         {
           assignments.push_back(
@@ -754,7 +755,7 @@ public:
     {
       const auto finish =
         new_u.second.model->estimate_finish(
-        entry.state, constraints, *estimate_cache);
+        entry.state, constraints, *travel_estimator);
 
       if (finish.has_value())
       {
@@ -795,13 +796,15 @@ public:
 
     if (add_charger)
     {
-      auto charge_battery = make_charging_request(entry.state.finish_time());
+      auto charge_battery = make_charging_request(
+        entry.state.time().value());
+
       const auto charge_battery_model =
         charge_battery->description()->make_model(
-        charge_battery->earliest_start_time(),
+        charge_battery->booking()->earliest_start_time(),
         config.parameters());
       auto battery_estimate = charge_battery_model->estimate_finish(
-        entry.state, constraints, *estimate_cache);
+        entry.state, constraints, *travel_estimator);
       if (battery_estimate.has_value())
       {
         new_node->assigned_tasks[entry.candidate].push_back(
@@ -817,7 +820,7 @@ public:
           const auto finish =
             new_u.second.model->estimate_finish(
             battery_estimate.value().finish_state(),
-            constraints, *estimate_cache);
+            constraints, *travel_estimator);
           if (finish.has_value())
           {
             new_u.second.candidates.update_candidate(
@@ -878,16 +881,16 @@ public:
           const rmf_task::requests::ChargeBattery::Description>(
           assignments.back().assignment.request()->description()))
         return nullptr;
-      state = assignments.back().assignment.state();
+      state = assignments.back().assignment.finish_state();
     }
 
-    auto charge_battery = make_charging_request(state.finish_time());
+    auto charge_battery = make_charging_request(state.time().value());
     const auto charge_battery_model =
       charge_battery->description()->make_model(
-      charge_battery->earliest_start_time(),
+      charge_battery->booking()->earliest_start_time(),
       config.parameters());
     auto estimate = charge_battery_model->estimate_finish(
-      state, config.constraints(), *estimate_cache);
+      state, config.constraints(), *travel_estimator);
     if (estimate.has_value())
     {
       new_node->assigned_tasks[agent].push_back(
@@ -906,7 +909,7 @@ public:
         const auto finish =
           new_u.second.model->estimate_finish(
           estimate.value().finish_state(),
-          config.constraints(), *estimate_cache);
+          config.constraints(), *travel_estimator);
         if (finish.has_value())
         {
           new_u.second.candidates.update_candidate(
@@ -1088,9 +1091,7 @@ TaskPlanner::TaskPlanner(
       Implementation{
         configuration,
         default_options,
-        std::make_shared<EstimateCache>(
-          configuration.parameters().planner()->
-          get_configuration().graph().num_waypoints())
+        std::make_shared<TravelEstimator>(configuration.parameters())
       }))
 {
   // Do nothing
@@ -1136,17 +1137,10 @@ auto TaskPlanner::compute_cost(const Assignments& assignments) const -> double
   const auto cost_calculator =
     rmf_task::BinaryPriorityScheme::make_cost_calculator();
   return cost_calculator->compute_cost(assignments);
-
 }
 
 // ============================================================================
-const std::shared_ptr<EstimateCache>& TaskPlanner::estimate_cache() const
-{
-  return _pimpl->estimate_cache;
-}
-
-// ============================================================================
-const rmf_task::agv::TaskPlanner::Configuration& TaskPlanner::configuration()
+const rmf_task::TaskPlanner::Configuration& TaskPlanner::configuration()
 const
 {
   return _pimpl->config;
@@ -1164,5 +1158,4 @@ auto TaskPlanner::default_options() -> Options&
   return _pimpl->default_options;
 }
 
-} // namespace agv
 } // namespace rmf_task
