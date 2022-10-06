@@ -19,7 +19,6 @@
 #include <rmf_task/requests/ChargeBattery.hpp>
 
 namespace rmf_task {
-namespace agv {
 
 // ============================================================================
 void Candidates::update_map()
@@ -53,7 +52,7 @@ void Candidates::update_candidate(
   _value_map.erase(it);
   _candidate_map[candidate] = _value_map.insert(
     {
-      state.finish_time(),
+      state.time().value(),
       Entry{candidate, state, wait_until, previous_state, require_charge_battery}
     });
 }
@@ -101,20 +100,20 @@ std::shared_ptr<Candidates> Candidates::make(
   const std::vector<State>& initial_states,
   const Constraints& constraints,
   const Parameters& parameters,
-  const Request::Model& request_model,
-  EstimateCache& estimate_cache,
+  const Task::Model& task_model,
+  const TravelEstimator& travel_estimator,
   TaskPlanner::TaskPlannerError& error)
 {
   Map initial_map;
   for (std::size_t i = 0; i < initial_states.size(); ++i)
   {
     const auto& state = initial_states[i];
-    const auto finish = request_model.estimate_finish(
-      state, constraints, estimate_cache);
+    const auto finish = task_model.estimate_finish(
+      state, constraints, travel_estimator);
     if (finish.has_value())
     {
       initial_map.insert({
-          finish.value().finish_state().finish_time(),
+          finish.value().finish_state().time().value(),
           Entry{
             i,
             finish.value().finish_state(),
@@ -131,17 +130,17 @@ std::shared_ptr<Candidates> Candidates::make(
         parameters);
       auto battery_estimate =
         battery_model->estimate_finish(
-        state, constraints, estimate_cache);
+        state, constraints, travel_estimator);
       if (battery_estimate.has_value())
       {
-        auto new_finish = request_model.estimate_finish(
+        auto new_finish = task_model.estimate_finish(
           battery_estimate.value().finish_state(),
           constraints,
-          estimate_cache);
+          travel_estimator);
         if (new_finish.has_value())
         {
           initial_map.insert(
-            {new_finish.value().finish_state().finish_time(),
+            {new_finish.value().finish_state().time().value(),
               Entry{
                 i,
                 new_finish.value().finish_state(),
@@ -179,9 +178,8 @@ std::shared_ptr<Candidates> Candidates::make(
 }
 
 // ============================================================================
-PendingTask::PendingTask(
-  ConstRequestPtr request_,
-  std::shared_ptr<Request::Model> model_,
+PendingTask::PendingTask(ConstRequestPtr request_,
+  Task::ConstModelPtr model_,
   Candidates candidates_)
 : request(std::move(request_)),
   model(std::move(model_)),
@@ -193,22 +191,21 @@ PendingTask::PendingTask(
 // ============================================================================
 std::shared_ptr<PendingTask> PendingTask::make(
   const rmf_traffic::Time start_time,
-  const std::vector<rmf_task::agv::State>& initial_states,
+  const std::vector<rmf_task::State>& initial_states,
   const Constraints& constraints,
   const Parameters& parameters,
   const ConstRequestPtr request_,
-  EstimateCache& estimate_cache,
+  const TravelEstimator& travel_estimator,
   TaskPlanner::TaskPlannerError& error)
 {
   const auto earliest_start_time = std::max(
     start_time,
-    request_->earliest_start_time());
+    request_->booking()->earliest_start_time());
   const auto model = request_->description()->make_model(
     earliest_start_time, parameters);
 
   const auto candidates = Candidates::make(start_time, initial_states,
-      constraints, parameters, *model, estimate_cache,
-      error);
+      constraints, parameters, *model, travel_estimator, error);
 
   if (!candidates)
     return nullptr;
@@ -218,5 +215,4 @@ std::shared_ptr<PendingTask> PendingTask::make(
   return pending_task;
 }
 
-} // namespace agv
 } // namespace rmf_task

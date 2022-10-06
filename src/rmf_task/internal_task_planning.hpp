@@ -15,10 +15,10 @@
  *
 */
 
-#ifndef SRC__RMF_TASK__AGV__INTERNAL_TASK_PLANNING_HPP
-#define SRC__RMF_TASK__AGV__INTERNAL_TASK_PLANNING_HPP
+#ifndef SRC__RMF_TASK__INTERNAL_TASK_PLANNING_HPP
+#define SRC__RMF_TASK__INTERNAL_TASK_PLANNING_HPP
 
-#include <rmf_task/agv/TaskPlanner.hpp>
+#include <rmf_task/TaskPlanner.hpp>
 
 #include <map>
 #include <set>
@@ -27,7 +27,6 @@
 #include <limits>
 
 namespace rmf_task {
-namespace agv {
 
 // ============================================================================
 struct Invariant
@@ -76,8 +75,8 @@ public:
     const std::vector<State>& initial_states,
     const Constraints& constraints,
     const Parameters& parameters,
-    const Request::Model& request_model,
-    EstimateCache& estimate_cache,
+    const Task::Model& task_model,
+    const TravelEstimator& travel_estimator,
     TaskPlanner::TaskPlannerError& error);
 
   Candidates(const Candidates& other);
@@ -113,21 +112,21 @@ public:
 
   static std::shared_ptr<PendingTask> make(
     const rmf_traffic::Time start_time,
-    const std::vector<rmf_task::agv::State>& initial_states,
+    const std::vector<rmf_task::State>& initial_states,
     const Constraints& constraints,
     const Parameters& parameters,
     const ConstRequestPtr request_,
-    EstimateCache& estimate_cache,
+    const TravelEstimator& travel_estimator,
     TaskPlanner::TaskPlannerError& error);
 
   rmf_task::ConstRequestPtr request;
-  std::shared_ptr<Request::Model> model;
+  Task::ConstModelPtr model;
   Candidates candidates;
 
 private:
   PendingTask(
     ConstRequestPtr request_,
-    std::shared_ptr<Request::Model> model_,
+    Task::ConstModelPtr model_,
     Candidates candidates_);
 };
 
@@ -164,7 +163,7 @@ struct Node
     for (const auto& u : unassigned_tasks)
     {
       double earliest_start_time = rmf_traffic::time::to_seconds(
-        u.second.request->earliest_start_time().time_since_epoch());
+        u.second.request->booking()->earliest_start_time().time_since_epoch());
       const auto invariant_duration =
         u.second.model->invariant_duration();
       double earliest_finish_time = earliest_start_time
@@ -212,7 +211,6 @@ struct LowestCostEstimate
   }
 };
 
-} // namespace agv
 } // namespace rmf_task
 
-#endif // SRC__RMF_TASK__AGV__INTERNAL_TASK_PLANNING_HPP
+#endif // SRC__RMF_TASK__INTERNAL_TASK_PLANNING_HPP
