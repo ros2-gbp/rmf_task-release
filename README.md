@@ -1,3 +1,28 @@
+## rmf_task (humble) - 2.1.4-1
+
+The packages in the `rmf_task` repository were released into the `humble` distro by running `/usr/bin/bloom-release --rosdistro humble rmf_task` on `Mon, 05 Jun 2023 03:46:36 -0000`
+
+These packages were released:
+- `rmf_task`
+- `rmf_task_sequence`
+
+Version of package(s) in repository `rmf_task`:
+
+- upstream repository: https://github.com/open-rmf/rmf_task.git
+- release repository: https://github.com/ros2-gbp/rmf_task-release.git
+- rosdistro version: `2.1.1-1`
+- old version: `2.1.1-1`
+- new version: `2.1.4-1`
+
+Versions of tools used:
+
+- bloom version: `0.11.2`
+- catkin_pkg version: `0.5.2`
+- rosdep version: `0.22.2`
+- rosdistro version: `0.9.0`
+- vcstools version: `0.1.42`
+
+
 ## rmf_task (rolling) - 2.1.3-1
 
 The packages in the `rmf_task` repository were released into the `rolling` distro by running `/usr/bin/bloom-release --rosdistro rolling rmf_task` on `Mon, 17 Apr 2023 14:57:53 -0000`
