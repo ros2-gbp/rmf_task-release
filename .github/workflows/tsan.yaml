@@ -18,4 +18,4 @@ jobs:
         rmf_task_sequence
       mixin: tsan
       dist-matrix: |
-        [{"ros_distribution": "humble", "ubuntu_distribution": "jammy"}]
+        [{"ros_distribution": "iron", "ubuntu_distribution": "jammy"}]
