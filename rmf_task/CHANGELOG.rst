@@ -2,16 +2,17 @@
 Changelog for package rmf_task
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.2.1 (2023-06-30)
+2.1.6 (2023-08-10)
 ------------------
-* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#90 <https://github.com/open-rmf/rmf_task/pull/90>`_)
+
+2.1.5 (2023-06-30)
+------------------
+* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#81 <https://github.com/open-rmf/rmf_task/pull/81>`_)
 * Contributors: Aaron Chong
 
-2.2.0 (2023-06-06)
+2.1.4 (2023-06-05)
 ------------------
-* Switch to rst changelogs
 * Update github actions and fix style as per uncrustify 0.72 (`#74 <https://github.com/open-rmf/rmf_task/pull/74>`_)
-* Fix build with apple clang (`#77 <https://github.com/open-rmf/rmf_task/pull/77>`_)
 * Contributors: Esteban Martinena, Yadunund
 
 2.1.3 (2022-04-17)
@@ -23,7 +24,7 @@ Changelog for package rmf_task
 2.1.2 (2022-11-14)
 ------------------
 * Removed c++fs option for clang
-* Fixing need of  stdc++fs to build RPM package (`#265 <https://github.com/open-rmf/rmf/pull/265>`_)
+* Fixing need of  stdc++fs to build RPM package
 * Contributors: Esteban Martinena
 
 2.1.1 (2022-10-11)
@@ -34,12 +35,14 @@ Changelog for package rmf_task
 2.1.0 (2022-05-19)
 ------------------
 * Fix undefined behavior in log: (`#62 <https://github.com/open-rmf/rmf_task/pull/62>`_)
+* Contributors: Grey
 
 2.0.0 (2022-02-14)
 ------------------
 * Support flexible task definitions (`#39 <https://github.com/open-rmf/rmf_task/pull/39>`_)
   * Abstract interfaces are used to define tasks
   * The task interfaces can be given arbitrary implementations by downstream users
+* Contributors: Grey, Xiyu, Yadunund, Youliang
 
 1.0.0 (2021-09-01)
 ------------------
@@ -51,6 +54,6 @@ Changelog for package rmf_task
 
 0.1.0 (2021-06-04)
 ------------------
-* Provides `rmf_task::requests` to describe various task requests which may be used for allocation planning
-* Provides `rmf_task::agv::TaskPlanner` object that can generate task allocation plans where a set of `rmf_task::requests` are optimally distributed across a set of agents
-* `rmf_task::requests::ChargeBattery` requests are automatically injected into the allocation set where necessary
+* Provides ``rmf_task::requests`` to describe various task requests which may be used for allocation planning
+* Provides ``rmf_task::agv::TaskPlanner`` object that can generate task allocation plans where a set of ``rmf_task::requests`` are optimally distributed across a set of agents
+* ``rmf_task::requests::ChargeBattery`` requests are automatically injected into the allocation set where necessary
