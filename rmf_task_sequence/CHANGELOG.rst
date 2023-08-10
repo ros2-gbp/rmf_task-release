@@ -2,15 +2,19 @@
 Changelog for package rmf_task_sequence
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.2.2 (2023-08-10)
+2.3.2 (2023-08-10)
 ------------------
-* Fix battery drain crash for GoToPlace (`#95 <https://github.com/open-rmf/rmf_task/pull/95>`_)
+* Fix battery drain crash for GoToPlace (`#94 <https://github.com/open-rmf/rmf_task/pull/94>`_)
 * Contributors: Yadunund
 
-2.2.1 (2023-06-30)
+2.3.1 (2023-06-30)
 ------------------
-* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#90 <https://github.com/open-rmf/rmf_task/pull/90>`_)
+* Added ``rmf_task_sequence`` to workflows and fixed codestyle (`#91 <https://github.com/open-rmf/rmf_task/pull/91>`_)
+* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#81 <https://github.com/open-rmf/rmf_task/pull/81>`_)
 * Contributors: Aaron Chong
+
+2.3.0 (2023-06-08)
+------------------
 
 2.2.0 (2023-06-06)
 ------------------
