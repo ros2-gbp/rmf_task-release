@@ -2,24 +2,22 @@
 Changelog for package rmf_task_sequence
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.2.3 (2023-12-15)
+2.1.7 (2023-12-15)
 ------------------
-* Fix edge case for task sequences (`#102 <https://github.com/open-rmf/rmf_task/pull/102>`_)
+* Fix race condition risk for task sequences (`#102 <https://github.com/open-rmf/rmf_task/pull/102>`_)
 
-2.2.2 (2023-08-10)
+2.1.6 (2023-08-10)
 ------------------
-* Fix battery drain crash for GoToPlace (`#95 <https://github.com/open-rmf/rmf_task/pull/95>`_)
+* Fix battery drain crash for GoToPlace (`#96 <https://github.com/open-rmf/rmf_task/pull/96>`_)
 * Contributors: Yadunund
 
-2.2.1 (2023-06-30)
+2.1.5 (2023-06-30)
 ------------------
-* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#90 <https://github.com/open-rmf/rmf_task/pull/90>`_)
+* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#81 <https://github.com/open-rmf/rmf_task/pull/81>`_)
 * Contributors: Aaron Chong
 
-2.2.0 (2023-06-06)
+2.1.4 (2023-06-05)
 ------------------
-* Switch to rst changelogs
-* Contributors: Yadunund
 
 2.1.3 (2022-04-17)
 ------------------
@@ -37,18 +35,19 @@ Changelog for package rmf_task_sequence
   exporting dependency info for that package, however that is not the
   recommended workflow for vendor packages which are ideally as
   transparent as possible.
-* Allow GoToPlace to know about expected future destinations (`#61 <https://github.com/open-rmf/rmf_task/pull/61>`_)
 * Contributors: Grey, Marco A. Gutiérrez, Steven! Ragnarök
 
 2.1.0 (2022-05-19)
 ------------------
 *  Allow GoToPlace to know about expected future destinations (`#61 <https://github.com/open-rmf/rmf_task/pull/61>`_)
+* Contributors: Grey
 
 2.0.0 (2022-02-14)
 ------------------
-* Support flexible task definitions (`#39 <https://github.com/open-rmf/rmf_task/pull/39>`_)
+* Support flexible task definitions (`#39 <https://github.com/open-rmf/rmf_task/pull/3>`_)
   * Provide an implementation for phase-sequence based tasks
   * Arbitrary phases can be implemented downstream
   * A simple event-wrapping phase implementation is provided
   * Events can be composed into a tree-structure of sequential events
   * Downstream users can implement arbitrary events
+* Contributors: Grey, Xiyu, Yadunund, Youliang
