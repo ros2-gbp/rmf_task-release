@@ -2,23 +2,25 @@
 Changelog for package rmf_task
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.4.0 (2023-12-22)
+2.2.5 (2024-03-28)
+------------------
+* Add labels to booking (`#113 <https://github.com/open-rmf/rmf_task/pull/113>`_)
+* Contributors: Aaron Chong, Grey
+
+2.2.4 (2023-12-22)
 ------------------
 
-2.3.3 (2023-12-15)
+2.2.3 (2023-12-15)
 ------------------
 * Allow charging tasks to run indefinitely (`#99 <https://github.com/open-rmf/rmf_task/pull/99>`_, `#100 <https://github.com/open-rmf/rmf_task/pull/100>`_)
 
-2.3.2 (2023-08-10)
+2.2.2 (2023-08-10)
 ------------------
 
-2.3.1 (2023-06-30)
+2.2.1 (2023-06-30)
 ------------------
-* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#81 <https://github.com/open-rmf/rmf_task/pull/81>`_)
+* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#90 <https://github.com/open-rmf/rmf_task/pull/90>`_)
 * Contributors: Aaron Chong
-
-2.3.0 (2023-06-08)
-------------------
 
 2.2.0 (2023-06-06)
 ------------------

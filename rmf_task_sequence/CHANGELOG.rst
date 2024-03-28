@@ -2,28 +2,27 @@
 Changelog for package rmf_task_sequence
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.4.0 (2023-12-22)
+2.2.5 (2024-03-28)
+------------------
+
+2.2.4 (2023-12-22)
 ------------------
 * Add support for multiple destinations to choose from. (`#101 <https://github.com/open-rmf/rmf_task/pull/101>`_)
-* Contributors: Arjo Chakravartyi, Grey
+* Contributors: Arjo Chakravarty, Grey
 
-2.3.3 (2023-12-15)
+2.2.3 (2023-12-15)
 ------------------
 * Fix edge case for task sequences (`#102 <https://github.com/open-rmf/rmf_task/pull/102>`_)
 
-2.3.2 (2023-08-10)
+2.2.2 (2023-08-10)
 ------------------
-* Fix battery drain crash for GoToPlace (`#94 <https://github.com/open-rmf/rmf_task/pull/94>`_)
+* Fix battery drain crash for GoToPlace (`#95 <https://github.com/open-rmf/rmf_task/pull/95>`_)
 * Contributors: Yadunund
 
-2.3.1 (2023-06-30)
+2.2.1 (2023-06-30)
 ------------------
-* Added ``rmf_task_sequence`` to workflows and fixed codestyle (`#91 <https://github.com/open-rmf/rmf_task/pull/91>`_)
-* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#81 <https://github.com/open-rmf/rmf_task/pull/81>`_)
+* Added ``requester`` and ``request_time`` fields to ``rmf_task::Task::Booking`` (`#90 <https://github.com/open-rmf/rmf_task/pull/90>`_)
 * Contributors: Aaron Chong
-
-2.3.0 (2023-06-08)
-------------------
 
 2.2.0 (2023-06-06)
 ------------------
