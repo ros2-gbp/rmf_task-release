@@ -1,0 +1,12 @@
+Source: ros-jazzy-rmf-task
+Section: misc
+Priority: optional
+Maintainer: Yadunund <yadunund@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), cmake, libeigen3-dev, ros-jazzy-ament-cmake-catch2 <!nocheck>, ros-jazzy-ament-cmake-uncrustify <!nocheck>, ros-jazzy-rmf-battery, ros-jazzy-rmf-utils, ros-jazzy-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-rmf-task
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, ros-jazzy-rmf-battery, ros-jazzy-rmf-utils, ros-jazzy-ros-workspace
+Description: Package for managing tasks in the Robotics Middleware Framework
