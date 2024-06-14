@@ -178,9 +178,9 @@ public:
       duration_estimate = adjust_estimate(
         duration_estimate, element_header.original_duration_estimate());
 
-      initial_state =
-        element->make_model(initial_state, parameters)
-        ->invariant_finish_state();
+      auto model = element->make_model(initial_state, parameters);
+      if (model)
+        initial_state = model->invariant_finish_state();
 
       if (detail_json.has_value())
       {
@@ -309,10 +309,12 @@ void Bundle::add(const Event::InitializerPtr& initializer)
       const auto& initialize_from = w.lock();
       if (!initialize_from)
       {
+        // *INDENT-OFF*
         throw std::runtime_error(
           "[rmf_task_sequence::Bundle::add] Use-after-free error: Event "
           "initializer has already destructed, but is still being used to "
           "initialize an event.");
+        // *INDENT-ON*
       }
 
       return initiate(
@@ -336,10 +338,12 @@ void Bundle::add(const Event::InitializerPtr& initializer)
       const auto& initialize_from = w.lock();
       if (!initialize_from)
       {
+        // *INDENT-OFF*
         throw std::runtime_error(
           "[rmf_task_sequence::Bundle::add] Use-after-free error: Event "
           "initializer has already destructed, but is still being used to "
           "initialize an event.");
+        // *INDENT-ON*
       }
 
       return restore(
