@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.5.0)
 
-project(rmf_task VERSION 2.10.0)
+project(rmf_task VERSION 2.1.3)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
@@ -23,7 +23,6 @@ include(GNUInstallDirs)
 find_package(rmf_utils REQUIRED)
 find_package(rmf_traffic REQUIRED)
 find_package(rmf_battery REQUIRED)
-find_package(nlohmann_json REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Threads)
 
@@ -42,8 +41,6 @@ add_library(rmf_task SHARED
 target_link_libraries(rmf_task
   PUBLIC
     rmf_battery::rmf_battery
-    rmf_traffic::rmf_traffic
-    nlohmann_json::nlohmann_json
     Threads::Threads
     $<$<CXX_COMPILER_ID:GNU>:stdc++fs>
 )
@@ -55,8 +52,7 @@ target_include_directories(rmf_task
     ${EIGEN3_INCLUDE_DIRS}
 )
 
-option(STYLE_TEST "Run uncrustify to evaluate the code style")
-if(BUILD_TESTING)
+if(BUILD_TESTING AND ament_cmake_catch2_FOUND AND ament_cmake_uncrustify_FOUND)
   file(GLOB_RECURSE unit_test_srcs "test/*.cpp")
 
   ament_add_catch2(
@@ -73,17 +69,15 @@ if(BUILD_TESTING)
       $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/>
   )
 
-  if(ament_cmake_catch2_FOUND AND STYLE_TEST)
-    find_file(uncrustify_config_file
-      NAMES "rmf_code_style.cfg"
-      PATHS "${rmf_utils_DIR}/../../../share/rmf_utils/")
+  find_file(uncrustify_config_file
+    NAMES "rmf_code_style.cfg"
+    PATHS "${rmf_utils_DIR}/../../../share/rmf_utils/")
 
-    ament_uncrustify(
-      ARGN include src test
-      CONFIG_FILE ${uncrustify_config_file}
-      MAX_LINE_LENGTH 80
-    )
-  endif()
+  ament_uncrustify(
+    ARGN include src test
+    CONFIG_FILE ${uncrustify_config_file}
+    MAX_LINE_LENGTH 80
+  )
 endif()
 
 

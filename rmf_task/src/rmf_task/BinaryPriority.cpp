@@ -32,13 +32,4 @@ std::size_t BinaryPriority::value() const
   return _value;
 }
 
-//==============================================================================
-nlohmann::json BinaryPriority::serialize() const
-{
-  nlohmann::json priority;
-  priority["type"] = "binary";
-  priority["value"] = _value;
-  return priority;
-}
-
 }

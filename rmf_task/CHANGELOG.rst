@@ -2,49 +2,15 @@
 Changelog for package rmf_task
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.12.0 (2026-11-13)
--------------------
-* bump cmake version (`#151 <https://github.com/open-rmf/rmf_task/issues/151>`_)
-* Contributors: Aaron Chong
-
-2.11.0 (2026-09-26)
--------------------
-* Add explicit rmf_traffic dependencies (`#145 <https://github.com/open-rmf/rmf_task/issues/145>`_)
-* Contributors: Plumezz
-
-2.9.0 (2026-01-13)
+2.5.2 (2026-11-23)
 ------------------
-* Customizable weights for task assignment cost (`#129 <https://github.com/open-rmf/rmf_task/issues/129>`_)
-* Contributors: kj
-
-2.10.0 (2026-06-15)
--------------------
-* Fix poorly defined nlohmann_json conversion (`#137 <https://github.com/open-rmf/rmf_task/issues/137>`_)
 * Resolve warnings (`#135 <https://github.com/open-rmf/rmf_task/issues/135>`_)
-  * resolve warnings
-  * resolve UB
-  ---------
 * add charge to labels (`#134 <https://github.com/open-rmf/rmf_task/issues/134>`_)
   Co-authored-by: Xiyu <ohxiyu@gmail.com>
 * add missing includes for GCC 15 (`#133 <https://github.com/open-rmf/rmf_task/issues/133>`_)
-* Prepare for release 2.9 (`#131 <https://github.com/open-rmf/rmf_task/issues/131>`_)
-  * Update changelogs
-  * Remove out of date version numbers
-  * 2.9.0
-  * Put version numbers back in
-  ---------
-* Customizable weights for task assignment cost (`#129 <https://github.com/open-rmf/rmf_task/issues/129>`_)
-* Contributors: Aaron Chong, Grey, Guilhem Saurel, kj
+* Contributors: Aaron Chong, Guilhem Saurel
 
-2.8.0 (2025-06-09)
-------------------
-
-2.7.0 (2024-11-27)
-------------------
-* Create abstract interface for Priority to be serialized into json (`#122 <https://github.com/open-rmf/rmf_task/issues/122>`_)
-* Contributors: Aaron Chong
-
-2.6.0 (2024-06-12)
+2.5.1 (2024-06-15)
 ------------------
 
 2.5.0 (2024-06-01)

@@ -18,9 +18,7 @@
 #ifndef SRC__RMF_TASK__BINARYPRIORITY_HPP
 #define SRC__RMF_TASK__BINARYPRIORITY_HPP
 
-#include <nlohmann/json.hpp>
-
-#include <rmf_task/Priority.hpp>
+#include "Priority.hpp"
 
 namespace rmf_task {
 
@@ -34,9 +32,6 @@ public:
 
   /// Get the value of this priority object
   std::size_t value() const;
-
-  /// Serialize priority
-  nlohmann::json serialize() const override;
 
 private:
   std::size_t _value;
