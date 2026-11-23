@@ -2,11 +2,43 @@
 Changelog for package rmf_task_sequence
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.12.0 (2026-11-13)
+-------------------
+* Fix Task::Active::rewind() so it actually rewinds (`#154 <https://github.com/open-rmf/rmf_task/issues/154>`_)
+  Assisted-by: Claude Opus 5.5 <noreply@anthropic.com>
+* Add GoToZone task-sequence event (`#136 <https://github.com/open-rmf/rmf_task/issues/136>`_)
+  Co-authored-by: kjchee <keai_jiang_chee@cgh.com.sg>
+  Co-authored-by: Loke Ji Xian <loke_ji_xian@cgh.com.sg>
+* bump cmake version (`#151 <https://github.com/open-rmf/rmf_task/issues/151>`_)
+* Contributors: Aaron Chong, HappySamuel, chart
+
+2.11.0 (2026-09-26)
+-------------------
+* Add explicit rmf_traffic dependencies (`#145 <https://github.com/open-rmf/rmf_task/issues/145>`_)
+* Contributors: Plumezz
+
 2.9.0 (2026-01-13)
 ------------------
 * Fix nullopt dereference in GoToPlace goal selection (`#130 <https://github.com/open-rmf/rmf_task/issues/130>`_)
 * Introduce start_at_departure option for go_to_place event (`#128 <https://github.com/open-rmf/rmf_task/issues/128>`_)
 * Contributors: kj
+
+2.10.0 (2026-06-15)
+-------------------
+* Fix poorly defined nlohmann_json conversion (`#137 <https://github.com/open-rmf/rmf_task/issues/137>`_)
+* Resolve warnings (`#135 <https://github.com/open-rmf/rmf_task/issues/135>`_)
+  * resolve warnings
+  * resolve UB
+  ---------
+* Prepare for release 2.9 (`#131 <https://github.com/open-rmf/rmf_task/issues/131>`_)
+  * Update changelogs
+  * Remove out of date version numbers
+  * 2.9.0
+  * Put version numbers back in
+  ---------
+* Fix nullopt dereference in GoToPlace goal selection (`#130 <https://github.com/open-rmf/rmf_task/issues/130>`_)
+* Introduce start_at_departure option for go_to_place event (`#128 <https://github.com/open-rmf/rmf_task/issues/128>`_)
+* Contributors: Aaron Chong, Grey, kj
 
 2.8.0 (2025-06-09)
 ------------------
